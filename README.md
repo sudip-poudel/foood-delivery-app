@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
-##SetUp in your computer
+##  SetUp in your computer
 
 Pull the code using git or download the code as zip
 then in that path run " npm install "
