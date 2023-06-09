@@ -17,7 +17,7 @@ const MealItems = (props) => {
 	return (
 		<li className={classes.meal}>
 			<div>
-				<h2 className={classes.name}>{props.name}</h2>
+				<h3 className={classes.name}>{props.name}</h3>
 				<img src={props.img} alt="image" />
 				<div className={classes.description}>{props.description}</div>
 				<div className={classes.price}>{price}</div>

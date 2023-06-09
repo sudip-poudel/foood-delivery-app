@@ -48,21 +48,24 @@ const AvailableMeals = () => {
 	}, []);
 
 	console.log(mealData.length, "statedata");
-	const mealsList = mealData.map((meal) => (
-		<MealItems
-			key={meal.id}
-			id={meal.id}
-			name={meal.name}
-			description={meal.description}
-			price={meal.price}
-			img={meal.img}
-		/>
+	const mealsList = mealData.map((meal, i) => (
+		<Card key={i}>
+			<MealItems
+				key={meal.id}
+				id={meal.id}
+				name={meal.name}
+				description={meal.description}
+				price={meal.price}
+				img={meal.img}
+			/>
+		</Card>
 	));
 	return (
 		<section className={classes.meals}>
-			<Card>
-				<ul>{mealsList}</ul>
-			</Card>
+			<h1>Pizzas</h1>
+			<ul>{mealsList}</ul>
+			<h1>veggess</h1>
+			<ul>{mealsList}</ul>
 		</section>
 	);
 };
