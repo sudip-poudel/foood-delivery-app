@@ -1,0 +1,29 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	background-color: beige;
+	border: 1px solid white;
+}
+
+.price {
+	display: flex;
+}
+.orderitems {
+	display: flex;
+	flex-direction: column;
+}
+.orderitems > button {
+	width: max-content;
+}
+.orderitems p {
+	margin: 0%;
+	padding: 0%;
+}
+.container h1 h3 p {
+	margin: 0%;
+	padding: 0%;
+}
+.orderitems h3 {
+	margin: 0%;
+	padding: 0%;
+}

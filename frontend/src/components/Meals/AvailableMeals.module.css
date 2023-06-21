@@ -1,0 +1,32 @@
+.meals {
+	/* max-width: 60rem; */
+	width: 90%;
+	margin: 2rem auto;
+	animation: meals-appear 1s ease-out forwards;
+}
+
+.meals ul {
+	/* position: relative; */
+	list-style: none;
+	display: flex;
+	/* justify-content: space-around; */
+	flex-wrap: wrap;
+	width: 102%;
+	margin-left: 0px;
+	padding: 0;
+}
+
+@keyframes meals-appear {
+	from {
+		opacity: 0;
+		transform: translateY(3rem);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+.meals h1 {
+	color: aliceblue;
+}

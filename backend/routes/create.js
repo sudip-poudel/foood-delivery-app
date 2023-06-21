@@ -1,6 +1,7 @@
 const express = require("express");
 const MealItem = require("../models/MealItems");
 const User = require("../models/User");
+const Orders = require("../models/Orders");
 const router = express.Router();
 
 router.get("/getitems", async (req, res) => {
@@ -48,6 +49,27 @@ router.post("/login", async (req, res) => {
 	} catch (error) {
 		console.log(error);
 		res.send(500).json({ success: false, messege: "Server Error" });
+	}
+});
+
+router.post("/order", async (req, res) => {
+	try {
+		const result = await Orders.create({
+			orderedIems: req.body.orderedItems,
+			totalAmount: req.body.totalAmount,
+			userId: req.body.email,
+		});
+		if (result) res.json({ success: true });
+	} catch (error) {
+		console.log(error);
+		res.send(500).json({ success: false, messege: "Server Error" });
+	}
+});
+router.get("/getorders", async (req, res) => {
+	const orders = await Orders.find({});
+	if (orders) res.json(orders);
+	else {
+		res.json({});
 	}
 });
 module.exports = router;
