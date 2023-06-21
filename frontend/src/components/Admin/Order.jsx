@@ -4,9 +4,12 @@ const Order = () => {
 	const [orders, setOrders] = useState([]);
 	useEffect(() => {
 		const getOrders = async () => {
-			const response = await fetch("http://localhost:5000/api/getorders", {
-				method: "get",
-			});
+			const response = await fetch(
+				`${import.meta.env.VITE_REACT_API_URL}/getorders`,
+				{
+					method: "get",
+				}
+			);
 			const data = await response.json();
 			setOrders(data);
 			console.log(data);

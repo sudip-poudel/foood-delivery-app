@@ -50,18 +50,21 @@ const Signup = () => {
 	};
 	useEffect(() => {
 		const handleRequest = async () => {
-			const response = await fetch("http://localhost:5000/api/createuser", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					name: formValues.name,
-					email: formValues.email,
-					password: formValues.password,
-					location: formValues.address,
-				}),
-			});
+			const response = await fetch(
+				`${import.meta.env.VITE_REACT_API_URL}/createuser`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						name: formValues.name,
+						email: formValues.email,
+						password: formValues.password,
+						location: formValues.address,
+					}),
+				}
+			);
 			const result = await response.json();
 			if (result.exist) {
 				return alert("User Already Exist, Please Login");

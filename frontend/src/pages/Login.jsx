@@ -57,16 +57,19 @@ const Login = () => {
 
 	useEffect(() => {
 		const handleRequest = async () => {
-			const response = await fetch("http://localhost:5000/api/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					email: formValues.email,
-					password: formValues.password,
-				}),
-			});
+			const response = await fetch(
+				`${import.meta.env.VITE_REACT_API_URL}/login`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						email: formValues.email,
+						password: formValues.password,
+					}),
+				}
+			);
 			const result = await response.json();
 			if (!result.success) {
 				return alert(result.messege);

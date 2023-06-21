@@ -37,9 +37,12 @@ const AvailableMeals = () => {
 
 	useEffect(() => {
 		const fetchedData = async () => {
-			const data = await fetch("http://localhost:5000/api/getitems", {
-				method: "GET",
-			});
+			const data = await fetch(
+				`${import.meta.env.VITE_REACT_API_URL}/getitems`,
+				{
+					method: "GET",
+				}
+			);
 			const datas = await data.json();
 			setData(datas);
 		};
