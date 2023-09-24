@@ -1,12 +1,18 @@
 import React from "react";
-import Order from "../components/Admin/Order";
+import LeftPanel from "../components/Admin/LeftPanel";
+import { Outlet } from "react-router-dom";
 
 const AdminPage = () => {
-	return (
-		<div>
-			<Order />
-		</div>
-	);
+  return (
+    <>
+      <div>
+        <LeftPanel />
+      </div>
+      <div>
+        <Outlet />
+      </div>
+    </>
+  );
 };
 
 export default AdminPage;

@@ -16,17 +16,27 @@ app.use(express.urlencoded({ extended: true }));
 // });
 // app.use(cors());
 const cors = require("cors");
+const Orders = require("./models/Orders");
 app.use(
-	cors({
-		origin: ["http://localhost:5173", "https://reactmeals-ujly.onrender.com"],
-	})
+  cors({
+    origin: ["http://localhost:5173", "https://reactmeals-ujly.onrender.com"],
+  })
 );
 
+// const deletedocs = async () => {
+//   try {
+//     const result = await Orders.deleteMany({ userId: "" });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+// deletedocs();
+
 app.get("/", (req, res) => {
-	res.send("Jelli world");
+  res.send("Jelli world");
 });
 app.use("/api", require("./routes/create"));
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+  console.log(`Example app listening on port ${port}`);
 });
