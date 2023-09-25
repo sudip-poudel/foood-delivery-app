@@ -1,0 +1,41 @@
+.footer {
+  background-color: #212529;
+  color: #fff;
+  padding: 50px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer_section {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.contact,
+.hours {
+  border-right: 2px solid #6c757d;
+}
+
+.section_title {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+  color: #ffc107;
+}
+
+.prg {
+  font-size: 1em;
+  margin-bottom: 0.5em;
+  color: #6c757d;
+}
+.prg a {
+  color: #6c757d;
+  text-decoration: none;
+}
+.prg a:hover {
+  color: #ffc107;
+}

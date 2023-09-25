@@ -1,15 +1,49 @@
 .form3 {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 30rem;
   margin: 0 auto;
-  width: 50%;
+  text-align: left;
+  background-color: rgba(73, 167, 170, 0.295);
   padding: 20px;
-  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 0 10px #ccc;
-  background-color: #fff;
-  margin-top: 20px;
-  margin-bottom: 20px;
+}
+.form3 input {
+  margin-bottom: 1rem;
+}
+.form3 label {
+  font-weight: bold;
+  color: rgb(94, 42, 23);
+  margin-bottom: 0.5rem;
+}
+.form3 input[type="submit"],
+.form3 input[type="button"] {
+  background-color: #e3e3e3;
+  color: black;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.form3 input[type="submit"]:hover,
+.form3 input[type="submit"]:active,
+.form3 input[type="button"]:hover,
+.form3 input[type="button"]:active {
+  background-color: #b1b1b1;
+}
+.form3 input[type="text"],
+.form3 textarea {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.form3 select {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.buttons {
+  display: flex;
+  justify-content: space-around;
 }

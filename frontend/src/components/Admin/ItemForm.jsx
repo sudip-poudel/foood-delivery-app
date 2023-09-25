@@ -1,6 +1,20 @@
 import React, { useEffect, useState } from "react";
 import classes from "./ItemForm.module.css";
+import { useNavigate } from "react-router-dom";
 const ItemForm = (props) => {
+  const navigate = useNavigate();
+
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_API_URL}/getCatagory`
+      );
+      const result = await response.json();
+      setCategories(result);
+    };
+    fetchCategories();
+  }, []);
   const initialItemValue = props.item
     ? props.item
     : {
@@ -21,6 +35,10 @@ const ItemForm = (props) => {
     e.preventDefault();
     props.onSubmitForm(newItem);
   };
+  const handleCancel = () => {
+    navigate("/admin/manageproducts");
+  };
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setNewItem({ ...newItem, [name]: value });
@@ -45,9 +63,11 @@ const ItemForm = (props) => {
           value={newItem.categoryselect}
           onChange={onChange}
         >
-          <option value="pizza">Pizza</option>
-          <option value="noodels">Noodels</option>
-          <option value="momo">Momo</option>
+          {categories.map((category, index) => (
+            <option key={index} value={category.catagoryName}>
+              {category.catagoryName}
+            </option>
+          ))}
         </select>
         <label htmlFor="description">Description:</label>
         <textarea
@@ -76,9 +96,13 @@ const ItemForm = (props) => {
           value={newItem.img}
           required
         />
-        <input type="submit" value="Submit" />
+        <div className={classes.buttons}>
+          <input type="submit" value="Submit" />
+          <input type="button" onClick={handleCancel} value={"Cancel"} />
+        </div>
       </form>
     </div>
+    // css for above form to make it look good
   );
 };
 

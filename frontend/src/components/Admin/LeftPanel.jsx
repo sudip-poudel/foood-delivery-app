@@ -7,6 +7,7 @@ const LeftPanel = () => {
       <Link to={"order"}>Order</Link>
       <Link to={"manageproducts"}>Manage Products</Link>
       <Link to={"addproducts"}>Add Products</Link>
+      <Link to={"managecategory"}>Manage Category</Link>
     </div>
   );
 };

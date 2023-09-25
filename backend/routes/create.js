@@ -2,6 +2,7 @@ const express = require("express");
 const MealItem = require("../models/MealItems");
 const User = require("../models/User");
 const Orders = require("../models/Orders");
+const Catagory = require("../models/Catagory");
 const router = express.Router();
 
 router.get("/getitems", async (req, res) => {
@@ -19,7 +20,7 @@ router.post("/createuser", async (req, res) => {
     if (userExist) {
       return res.json({ success: false, exist: true });
     }
-    User.create({
+    await User.create({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
@@ -166,6 +167,47 @@ router.post("/deleteorder/:id", async (req, res) => {
     if (result) res.json({ success: true, messege: "Order Deleted" });
     else {
       res.json({ success: false, messege: "Order Not Found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.send(500).json({ success: false, messege: "Server Error" });
+  }
+});
+router.post("/addcatagory", async (req, res) => {
+  try {
+    console.log(req.body);
+    const result = await Catagory.create({
+      catagoryName: req.body.catagoryName,
+    });
+    if (result) {
+      console.log(result);
+      res.json({ success: true, messege: "Category Added" });
+    } else {
+      res.json({ success: false, messege: "Error" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.send(500).json({ success: false, messege: "Server Error" });
+  }
+});
+router.get("/getcatagory", async (req, res) => {
+  try {
+    const result = await Catagory.find({});
+    if (result) res.json(result);
+    else {
+      res.json({ success: false, messege: "Error" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.send(500).json({ success: false, messege: "Server Error" });
+  }
+});
+router.get("/deletecatagory/:id", async (req, res) => {
+  try {
+    const result = await Catagory.deleteOne({ _id: req.params.id });
+    if (result) res.json({ success: true, messege: "Category Deleted" });
+    else {
+      res.json({ success: false, messege: "Error" });
     }
   } catch (error) {
     console.log(error);
