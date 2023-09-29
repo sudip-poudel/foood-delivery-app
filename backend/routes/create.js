@@ -4,6 +4,22 @@ const User = require("../models/User");
 const Orders = require("../models/Orders");
 const Catagory = require("../models/Catagory");
 const router = express.Router();
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "/public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      `image_${Date.now()}${file.originalname.trim(" ")}` +
+        path.extname(file.originalname)
+    );
+  },
+});
+const upload = multer({ storage });
 
 router.get("/getitems", async (req, res) => {
   try {
@@ -105,28 +121,30 @@ router.post("/deleteproduct", async (req, res) => {
     res.send(500).json({ success: false, messege: "Server Error" });
   }
 });
-router.post("/additem", async (req, res) => {
+router.post("/additem", upload.single("img"), async (req, res) => {
   try {
-    const result = await MealItem.create({
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      img: req.body.img,
-      category: req.body.category,
-    });
-    if (result) {
-      res.json({ success: true, messege: "Product Added Successfully" });
-    }
+    console.log(req.body, req.file);
+    const file = req.file;
+    const meta = req.body;
+    //   const result = await MealItem.create({
+    //     name: req.body.name,
+    //     description: req.body.description,
+    //     price: req.body.price,
+    //     img: req.body.img,
+    //     category: req.body.category,
+    //   });
+    //   if (result) {
+    //     res.json({ success: true, messege: "Product Added Successfully" });
+    //   }
   } catch (error) {
-    console.log(error);
-    res.send(500).json({ success: false, messege: "Server Error" });
+    //   console.log(error);
+    //   res.send(500).json({ success: false, messege: "Server Error" });
   }
 });
 router.get("/getitems/:id", async (req, res) => {
   try {
-    console.log(req.params.id);
     const data = await MealItem.findOne({ _id: req.params.id });
-    console.log(data);
+    // console.log(data);
     if (data) res.json(data);
     else {
       res.json({ success: false, messege: "Item Not Found!" });
@@ -137,7 +155,7 @@ router.get("/getitems/:id", async (req, res) => {
 });
 router.post("/edititem/:id", async (req, res) => {
   try {
-    console.log(req.params.id);
+    // console.log(req.params.id);
     const data = await MealItem.updateOne(
       { _id: req.params.id },
       {
@@ -150,10 +168,10 @@ router.post("/edititem/:id", async (req, res) => {
         },
       }
     );
-    console.log(data);
+    // console.log(data);
     if (data) {
       res.json({ success: true, messege: "Item Updated Successfully" });
-      console.log("inside true");
+      // console.log("inside true");
     } else {
       res.json({ success: false, messege: "Item Not Found!" });
     }
@@ -180,7 +198,7 @@ router.post("/addcatagory", async (req, res) => {
       catagoryName: req.body.catagoryName,
     });
     if (result) {
-      console.log(result);
+      // console.log(result);
       res.json({ success: true, messege: "Category Added" });
     } else {
       res.json({ success: false, messege: "Error" });

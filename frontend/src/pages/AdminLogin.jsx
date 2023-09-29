@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./Login.module.css";
 import Button from "../components/UI/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Head from "./Head";
 const Login = () => {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ const Login = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: formValues.email,
+            email: formValues.email.toLowerCase(),
             password: formValues.password,
           }),
         }

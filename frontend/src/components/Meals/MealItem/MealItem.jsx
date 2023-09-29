@@ -21,7 +21,7 @@ const MealItems = (props) => {
         <img
           height={200}
           width={300}
-          src={`/images/${props.img}`}
+          src={`${import.meta.env.VITE_REACT_API_IMG_URL}/images/${props.img}`}
           alt="image"
         />
         <div className={classes.description}>{props.description}</div>

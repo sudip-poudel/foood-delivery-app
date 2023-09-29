@@ -5,7 +5,7 @@ const mealSchema = new Schema({
   name: String,
   description: String,
   price: Number,
-  img: String,
+  img: { type: String, unique: true },
   category: String,
 });
 const food_items = model("food_items", mealSchema);

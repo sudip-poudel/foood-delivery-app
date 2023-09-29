@@ -59,7 +59,7 @@ const Signup = () => {
           },
           body: JSON.stringify({
             name: formValues.name,
-            email: formValues.email,
+            email: formValues.email.toLowerCase(),
             password: formValues.password,
             location: formValues.address,
           }),

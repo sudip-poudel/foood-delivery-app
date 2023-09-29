@@ -3,8 +3,10 @@ const app = express();
 // const cors = require("cors");
 const mongoDB = require("./db");
 const port = 5000;
+const path = require("path");
 mongoDB();
 app.use(express.json());
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 // app.use((req, res, next) => {
 // 	res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
@@ -23,20 +25,12 @@ app.use(
   })
 );
 
-// const deletedocs = async () => {
-//   try {
-//     const result = await Orders.deleteMany({ userId: "" });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-// deletedocs();
-
 app.get("/", (req, res) => {
   res.send("Jelli world");
 });
 app.use("/api", require("./routes/create"));
+app.use(require("./routes/filerouter"));
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(` Listening on port ${port}`);
 });

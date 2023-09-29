@@ -37,7 +37,7 @@ const ProductsCard = (props) => {
         <h3 className={classes.name}>{props.name}</h3>
 
         <img
-          src={`/images/${props.img}`}
+          src={`${import.meta.env.VITE_REACT_API_IMG_URL}/images/${props.img}`}
           height={200}
           width={300}
           alt="image"

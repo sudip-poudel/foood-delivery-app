@@ -5,6 +5,7 @@ const ItemForm = (props) => {
   const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
+  const [newItem, setNewItem] = useState({});
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch(
@@ -15,34 +16,42 @@ const ItemForm = (props) => {
     };
     fetchCategories();
   }, []);
-  const initialItemValue = props.item
-    ? props.item
-    : {
+  useEffect(() => {
+    if (props.item !== undefined) setNewItem(props.item);
+    else {
+      setNewItem({
         name: "",
         categoryselect: "",
         description: "",
         price: "",
         img: "",
-      };
-  console.log(initialItemValue);
-  const [newItem, setNewItem] = useState(initialItemValue);
-  useEffect(() => {
-    setNewItem(initialItemValue);
-  }, []);
+      });
+    }
+  }, [props.item]);
   console.log(props.item);
   console.log(newItem);
   const handleSubmit = (e) => {
     e.preventDefault();
     props.onSubmitForm(newItem);
   };
+
   const handleCancel = () => {
     navigate("/admin/manageproducts");
   };
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    setNewItem({ ...newItem, [name]: value });
+    if (name !== "img") {
+      setNewItem({ ...newItem, [name]: value });
+    } else {
+      //hereeeeee
+      const image = e.target.files[0];
+      setNewItem({ ...newItem, img: image });
+    }
   };
+  useEffect(() => {
+    console.log(newItem);
+  }, [newItem]);
   return (
     <div>
       <h1>Add Product</h1>
@@ -87,14 +96,15 @@ const ItemForm = (props) => {
           value={newItem.price}
           required
         />
-        <label htmlFor="img">Image Link:</label>
+        <label htmlFor="image">Image :</label>
         <input
-          type="text"
-          id="img"
+          type="file"
+          id="image"
           onChange={onChange}
+          accept=".jpg , .jpeg , .png"
           name="img"
-          value={newItem.img}
-          required
+          value={""}
+          // required
         />
         <div className={classes.buttons}>
           <input type="submit" value="Submit" />
@@ -102,7 +112,6 @@ const ItemForm = (props) => {
         </div>
       </form>
     </div>
-    // css for above form to make it look good
   );
 };
 
