@@ -5,25 +5,21 @@ import axios from "axios";
 const AddProducts = () => {
   const navigate = useNavigate();
   const handleSubmit = async (newItem) => {
-    const itemData = {
-      name: newItem.name,
-      category: newItem.categoryselect,
-      description: newItem.description,
-      price: newItem.price,
-      img: newItem.img,
-    };
+    const formData = new FormData();
+    formData.append("name", newItem.name);
+    formData.append("category", newItem.categoryselect);
+    formData.append("description", newItem.description);
+    formData.append("price", newItem.price);
+    formData.append("file", newItem.img);
     const img = itemData.img;
-    const data = await axios.post(
-      `${import.meta.env.VITE_REACT_API_URL}/additem`,
-      {
-        itemData,
-        // method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
-        // body: JSON.stringify(itemData),
-      }
-    );
+    const data = await axios.post(`http://localhost:5000/api/additem`, {
+      formData,
+      // method: "POST",
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
+      // body: JSON.stringify(itemData),
+    });
     const response = await data.json();
     if (response.success) {
       alert(`${response.messege}`);

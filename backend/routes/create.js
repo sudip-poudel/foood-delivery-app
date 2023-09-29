@@ -7,19 +7,20 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "/public/images");
-  },
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      `image_${Date.now()}${file.originalname.trim(" ")}` +
-        path.extname(file.originalname)
-    );
-  },
-});
-const upload = multer({ storage });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "/public/images");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(
+//       null,
+//       `image_${Date.now()}${file.originalname.trim(" ")}` +
+//         path.extname(file.originalname)
+//     );
+//   },
+// });
+const storage = multer.memoryStorage();
+const upload = multer({ storage }).single("file");
 
 router.get("/getitems", async (req, res) => {
   try {
@@ -121,21 +122,22 @@ router.post("/deleteproduct", async (req, res) => {
     res.send(500).json({ success: false, messege: "Server Error" });
   }
 });
-router.post("/additem", upload.single("img"), async (req, res) => {
+router.post("/additem", upload, async (req, res) => {
   try {
     console.log(req.body, req.file);
     const file = req.file;
     const meta = req.body;
-    //   const result = await MealItem.create({
-    //     name: req.body.name,
-    //     description: req.body.description,
-    //     price: req.body.price,
-    //     img: req.body.img,
-    //     category: req.body.category,
-    //   });
-    //   if (result) {
-    //     res.json({ success: true, messege: "Product Added Successfully" });
-    //   }
+    const result = await MealItem.create({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      img: req.file,
+      category: req.body.category,
+    });
+    console.log(result);
+    if (result) {
+      res.json({ success: true, messege: "Product Added Successfully" });
+    }
   } catch (error) {
     //   console.log(error);
     //   res.send(500).json({ success: false, messege: "Server Error" });
