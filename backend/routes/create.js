@@ -5,6 +5,8 @@ const Orders = require("../models/Orders");
 const Catagory = require("../models/Catagory");
 const router = express.Router();
 const multer = require("multer");
+const cloudinary = require("cloudinary");
+const { getDataUri } = require("../datauri");
 const path = require("path");
 
 // const storage = multer.diskStorage({
@@ -21,6 +23,11 @@ const path = require("path");
 // });
 const storage = multer.memoryStorage();
 const upload = multer({ storage }).single("file");
+cloudinary.v2.config({
+  cloud_name: "ds8b7v9pf",
+  api_key: "551468213196962",
+  api_secret: "pUMlJl1SsKS3ap_sOQbPl66idkg",
+});
 
 router.get("/getitems", async (req, res) => {
   try {
@@ -127,16 +134,22 @@ router.post("/additem", upload, async (req, res) => {
     console.log(req.body, req.file);
     const file = req.file;
     const meta = req.body;
+    const uri = getDataUri(file);
+    const uploaded = await cloudinary.v2.uploader.upload(uri.content);
     const result = await MealItem.create({
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      img: req.file,
+      img: uploaded.secure_url,
       category: req.body.category,
     });
     console.log(result);
     if (result) {
-      res.json({ success: true, messege: "Product Added Successfully" });
+      res.json({
+        success: true,
+        messege: "Product Added Successfully",
+        url: uploaded.secure_url,
+      });
     }
   } catch (error) {
     //   console.log(error);
