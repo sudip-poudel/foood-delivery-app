@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import EditItems from "./components/Admin/EditItems";
 import AdminLogin from "./pages/AdminLogin";
 import ManageCatagory from "./components/Admin/ManageCategory";
+import Checkout from "./pages/Checkout";
 function App() {
   const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ function App() {
     {
       path: "/Signup",
       element: <Signup />,
+    },
+    {
+      path: "/checkout",
+      element: <Checkout />,
     },
     // {
     // 	path: "/orderpage",

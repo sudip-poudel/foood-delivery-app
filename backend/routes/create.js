@@ -5,29 +5,19 @@ const Orders = require("../models/Orders");
 const Catagory = require("../models/Catagory");
 const router = express.Router();
 const multer = require("multer");
-const cloudinary = require("cloudinary");
-const { getDataUri } = require("../datauri");
+// const cloudinary = require("cloudinary");
+// const { getDataUri } = require("../datauri");
 const path = require("path");
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "/public/images");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(
-//       null,
-//       `image_${Date.now()}${file.originalname.trim(" ")}` +
-//         path.extname(file.originalname)
-//     );
-//   },
-// });
-const storage = multer.memoryStorage();
-const upload = multer({ storage }).single("file");
-cloudinary.v2.config({
-  cloud_name: "ds8b7v9pf",
-  api_key: "551468213196962",
-  api_secret: "pUMlJl1SsKS3ap_sOQbPl66idkg",
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, `public/images`);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `image_${Date.now()}${file.originalname.trim(" ")}`);
+  },
 });
+const upload = multer({ storage });
 
 router.get("/getitems", async (req, res) => {
   try {
@@ -129,18 +119,17 @@ router.post("/deleteproduct", async (req, res) => {
     res.send(500).json({ success: false, messege: "Server Error" });
   }
 });
-router.post("/additem", upload, async (req, res) => {
+router.post("/additem", upload.single("file"), async (req, res) => {
   try {
     console.log(req.body, req.file);
-    const file = req.file;
-    const meta = req.body;
-    const uri = getDataUri(file);
-    const uploaded = await cloudinary.v2.uploader.upload(uri.content);
+    // const file = req.file;
+    // const meta = req.body;
     const result = await MealItem.create({
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      img: uploaded.secure_url,
+      // img: uploaded.secure_url,
+      img: req.file.filename,
       category: req.body.category,
     });
     console.log(result);
@@ -148,12 +137,11 @@ router.post("/additem", upload, async (req, res) => {
       res.json({
         success: true,
         messege: "Product Added Successfully",
-        url: uploaded.secure_url,
       });
     }
   } catch (error) {
-    //   console.log(error);
-    //   res.send(500).json({ success: false, messege: "Server Error" });
+    console.log(error);
+    res.send(500).json({ success: false, messege: "Server Error" });
   }
 });
 router.get("/getitems/:id", async (req, res) => {

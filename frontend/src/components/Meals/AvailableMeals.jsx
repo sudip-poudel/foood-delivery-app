@@ -2,38 +2,10 @@ import Card from "../UI/Card";
 import classes from "./AvailableMeals.module.css";
 import MealItems from "./MealItem/MealItem";
 import { useEffect, useState } from "react";
-// const DUMMY_MEALS = [
-// 	{
-// 		id: "m1",
-// 		name: "Sushi",
-// 		description: "Finest fish and veggies",
-// 		price: 22.99,
-// 		img: "https://source.unsplash.com/featured/300x203",
-// 	},
-// 	{
-// 		id: "m2",
-// 		name: "Schnitzel",
-// 		description: "A german specialty!",
-// 		price: 16.5,
-// 		img: "https://source.unsplash.com/featured/300x203",
-// 	},
-// 	{
-// 		id: "m3",
-// 		name: "Barbecue Burger",
-// 		description: "American, raw, meaty",
-// 		price: 12.99,
-// 		img: "https://source.unsplash.com/featured/300x203",
-// 	},
-// 	{
-// 		id: "m4",
-// 		name: "Green Bowl",
-// 		description: "Healthy...and green...",
-// 		price: 18.99,
-// 		img: "https://source.unsplash.com/featured/300x203",
-// 	},
-// ];
+import axios from "axios";
 const AvailableMeals = () => {
   const [mealData, setData] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchedData = async () => {
@@ -43,13 +15,19 @@ const AvailableMeals = () => {
           method: "GET",
         }
       );
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_API_URL}/getCatagory`
+      );
       const datas = await data.json();
+      const category = response.data;
+      setCategories(category);
       setData(datas);
     };
     fetchedData();
   }, []);
 
-  console.log(mealData, "statedata");
+  // console.log(mealData, "statedata");
+  console.log(categories, "categories");
   // console.log(mealsList);
   const getMeal = (mealCategory) => {
     const mealsList = mealData.filter((meal) => meal.catagory === mealCategory);
@@ -58,7 +36,7 @@ const AvailableMeals = () => {
       <Card key={i}>
         <MealItems
           key={meal.id}
-          id={meal.id}
+          id={meal._id}
           name={meal.name}
           description={meal.description}
           price={meal.price}
@@ -68,12 +46,21 @@ const AvailableMeals = () => {
     ));
     return listItem;
   };
-  // console.log(mealsList);
-  // const pizza = mealsList.filter((meal) => meal.category === "pizza");
   return (
     <section className={classes.meals}>
+      {categories.map((category) => {
+        return (
+          <div key={category._id}>
+            {/* <p>Hello</p> */}
+            <h1>{category.catagoryName.toUpperCase()}</h1>
+            <ul>{getMeal(category.catagoryName)}</ul>
+          </div>
+        );
+      })}
+      {/* 
       <h1>Fast-Food</h1>
       <ul>{getMeal("Fast-food")}</ul>
+      
       <h1>Snacks</h1>
       <ul>{getMeal("Snacks")}</ul>
       <h1>Noodles</h1>
@@ -83,7 +70,7 @@ const AvailableMeals = () => {
       <h1>Meal</h1>
       <ul>{getMeal("meal")}</ul>
       <h1>Drink</h1>
-      <ul>{getMeal("Drink")}</ul>
+      <ul>{getMeal("Drink")}</ul> */}
     </section>
   );
 };

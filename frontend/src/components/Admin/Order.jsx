@@ -55,13 +55,13 @@ const Order = () => {
     return (
       <div key={Math.random()} className={classes.container}>
         <h3> User: {order.userId}</h3>
-        <Card>{orderedItems}</Card>
+        <div className={classes.card}>{orderedItems}</div>
         <h3>Total Amount: {order.totalAmount} </h3>
         <button
           type="button"
           onClick={handleOrderComplete.bind(null, order._id)}
         >
-          Completed
+          <span>Order Complete</span>
         </button>
       </div>
     );

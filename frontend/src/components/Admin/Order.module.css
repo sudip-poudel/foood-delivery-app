@@ -2,10 +2,19 @@
   display: flex;
   flex-wrap: wrap;
 }
+.card {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.25);
+  border-radius: 14px;
+  background-color: white;
+  width: 15rem;
+}
 .container {
   display: inline-block;
-  background-color: beige;
-  border: 1px solid white;
+  background-color: #f5f5f5;
+  border: 1px solid;
   border-radius: 2%;
   margin: 1% 1%;
   padding: 1%;
@@ -22,10 +31,17 @@
 .orderitems {
   display: flex;
   flex-direction: column;
-  padding: 0% 5%;
+  /* background-color: #dec8d3; */
+  margin-left: 2%;
+  padding: 2% 5%;
+  color: #333333;
 }
-.orderitems > button {
+.container button {
   width: max-content;
+  border-radius: 12px;
+  border: rgb(43, 42, 42) 1px solid;
+  background-color: #fae9e1;
+  /* background-color: blue; */
 }
 /* .orderitems p {
   margin: 0%;

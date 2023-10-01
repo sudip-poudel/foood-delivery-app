@@ -1,10 +1,13 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import classes from "./Cart.module.css";
 import Modal from "../UI/Modal";
 import CartContext from "../../store/cart-context";
 import CartItems from "./CartItems";
 function Cart(props) {
+  const navigate = useNavigate();
   const cartCtx = useContext(CartContext);
+  console.log(cartCtx);
   const cartAddHandler = (item) => {
     cartCtx.addItem({ ...item, amount: 1 });
   };
@@ -13,6 +16,12 @@ function Cart(props) {
   };
 
   const handleOrder = async () => {
+    if (cartCtx.items.length) {
+      navigate("/checkout");
+    } else {
+      alert("Please add at least one item in cart.");
+    }
+    /*
     if (cartCtx.items.length) {
       const orderedItems = cartCtx.items;
       const userEmail = cartCtx.currentUserEmail;
@@ -39,7 +48,7 @@ function Cart(props) {
       }
       return;
     }
-    alert("Please add at least one item in cart.");
+    alert("Please add at least one item in cart.");*/
   };
   const cartItems = (
     <ul className={classes["cart-items"]}>

@@ -1,10 +1,11 @@
 .form3 {
   display: flex;
   flex-direction: column;
-  width: 30rem;
-  margin: 0 auto;
+  width: 50rem;
+  height: 90%;
+  margin: 0rem auto;
   text-align: left;
-  background-color: rgba(73, 167, 170, 0.295);
+  background-color: rgba(204, 253, 255, 0.295);
   padding: 20px;
   border-radius: 10px;
 }
@@ -13,7 +14,7 @@
 }
 .form3 label {
   font-weight: bold;
-  color: rgb(94, 42, 23);
+  color: rgb(57, 19, 61);
   margin-bottom: 0.5rem;
 }
 .form3 input[type="submit"],

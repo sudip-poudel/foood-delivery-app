@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./ItemForm.module.css";
 import { useNavigate } from "react-router-dom";
+import Button from "../UI/Button";
 const ItemForm = (props) => {
   const navigate = useNavigate();
 
@@ -28,11 +29,12 @@ const ItemForm = (props) => {
       });
     }
   }, [props.item]);
-  console.log(props.item);
-  console.log(newItem);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onSubmitForm(newItem);
+    console.log(newItem, "this is inside itemform");
+    const items = newItem;
+    props.onSubmitForm(items);
   };
 
   const handleCancel = () => {
@@ -46,11 +48,13 @@ const ItemForm = (props) => {
     } else {
       //hereeeeee
       const image = e.target.files[0];
+      console.log(e.target.files[0]);
+      console.log("testdjfliasdh");
       setNewItem({ ...newItem, img: image });
     }
   };
   useEffect(() => {
-    console.log(newItem);
+    // console.log(newItem);
   }, [newItem]);
   return (
     <div>
@@ -72,6 +76,15 @@ const ItemForm = (props) => {
           value={newItem.categoryselect}
           onChange={onChange}
         >
+          {props.item !== undefined ? (
+            <option value={""} disabled selected>
+              Select Category
+            </option>
+          ) : (
+            <option value={""} disabled>
+              Select Category
+            </option>
+          )}
           {categories.map((category, index) => (
             <option key={index} value={category.catagoryName}>
               {category.catagoryName}
@@ -103,12 +116,16 @@ const ItemForm = (props) => {
           onChange={onChange}
           accept=".jpg , .jpeg , .png"
           name="img"
-          value={""}
-          // required
+          // value={newItem.img}
+          required
         />
         <div className={classes.buttons}>
-          <input type="submit" value="Submit" />
-          <input type="button" onClick={handleCancel} value={"Cancel"} />
+          <Button type="submit" value="Submit">
+            Submit
+          </Button>
+          <Button type="button" onClick={handleCancel}>
+            Cancel
+          </Button>
         </div>
       </form>
     </div>

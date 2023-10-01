@@ -1,0 +1,35 @@
+.page {
+  background-color: aliceblue;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.image {
+  border-radius: 50%;
+  object-fit: cover;
+}
+.details {
+  /* background-color: aqua; */
+  display: flex;
+  width: 100%;
+  height: min-content;
+}
+.container {
+  /* background-color: blueviolet; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3% 5%;
+}
+.allitems {
+  width: 80%;
+}
+.itemdetail {
+  padding-left: 5%;
+  display: flex;
+  flex-direction: column;
+}
+.total {
+  font-size: large;
+  font-weight: 500;
+}

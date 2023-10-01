@@ -2,9 +2,11 @@ import { React } from "react";
 import classes from "./ProductsCard.module.css";
 import Button from "../UI/Button";
 import { Link } from "react-router-dom";
+
 const ProductsCard = (props) => {
-  const price = `Rs ${props.price.toFixed(2)}`;
-  console.log(props.id, "product id");
+  // const price = `Rs ${props.price.toFixed(2)}`;
+
+  const price = `Rs ${props.price}`;
 
   const deleteHandler = async () => {
     const id = props.id;

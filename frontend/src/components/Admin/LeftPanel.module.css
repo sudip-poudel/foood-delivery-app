@@ -14,16 +14,21 @@
   align-items: center;
   justify-content: center;
 }
-.container a {
+.anchor {
   text-decoration: none;
   font-weight: 500;
   font-size: larger;
   padding: 10px 20px;
-  color: #8a2b06;
+  color: #ffffff;
 }
 a:focus {
   outline: none;
 }
-a:active {
+/* a:active {
   color: rgb(213, 151, 74);
+} */
+.active {
+  /* color: #ffffff; */
+  color: rgb(213, 151, 74);
+  /* background-color: blue; */
 }
