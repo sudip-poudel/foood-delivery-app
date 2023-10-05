@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
-const uri =
-	"mongodb+srv://reactmeals:root@cluster0.mcnxmvw.mongodb.net/reactmeals?retryWrites=true&w=majority"; //reactmeals
-// "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.9.0";
+const uri = "mongodb://localhost:27017/reactmeals"; //reactmeals
+// "mongodb+srv://reactmeals:root@cluster0.mcnxmvw.mongodb.net/reactmeals?retryWrites=true&w=majority"; //reactmeals
 
 const mongoDB = async () => {
-	try {
-		await mongoose.connect(uri, { useNewUrlParser: true });
-		console.log("Connected sucessfully!");
-	} catch (error) {
-		console.log(error);
-	}
+  try {
+    await mongoose.connect(uri, { useNewUrlParser: true });
+    console.log("Connected sucessfully!");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = mongoDB;

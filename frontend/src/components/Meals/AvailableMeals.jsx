@@ -16,7 +16,7 @@ const AvailableMeals = () => {
         }
       );
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_API_URL}/getCatagory`
+        `${import.meta.env.VITE_REACT_API_URL}/getcategory`
       );
       const datas = await data.json();
       const category = response.data;
@@ -26,12 +26,12 @@ const AvailableMeals = () => {
     fetchedData();
   }, []);
 
-  // console.log(mealData, "statedata");
+  console.log(mealData, "statedata");
   console.log(categories, "categories");
   // console.log(mealsList);
   const getMeal = (mealCategory) => {
-    const mealsList = mealData.filter((meal) => meal.catagory === mealCategory);
-
+    const mealsList = mealData.filter((meal) => meal.category == mealCategory);
+    console.log(mealsList, "mealsList");
     const listItem = mealsList.map((meal, i) => (
       <Card key={i}>
         <MealItems
@@ -51,9 +51,8 @@ const AvailableMeals = () => {
       {categories.map((category) => {
         return (
           <div key={category._id}>
-            {/* <p>Hello</p> */}
-            <h1>{category.catagoryName.toUpperCase()}</h1>
-            <ul>{getMeal(category.catagoryName)}</ul>
+            <h1>{category.categoryName.toUpperCase()}</h1>
+            <ul>{getMeal(category.categoryName)}</ul>
           </div>
         );
       })}

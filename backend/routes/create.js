@@ -2,12 +2,14 @@ const express = require("express");
 const MealItem = require("../models/MealItems");
 const User = require("../models/User");
 const Orders = require("../models/Orders");
-const Catagory = require("../models/Catagory");
+const category = require("../models/Category");
 const router = express.Router();
 const multer = require("multer");
-// const cloudinary = require("cloudinary");
-// const { getDataUri } = require("../datauri");
 const path = require("path");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const getUser = require("../middlewares/getuser");
+require("dotenv").config();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -29,18 +31,25 @@ router.get("/getitems", async (req, res) => {
 });
 router.post("/createuser", async (req, res) => {
   try {
-    console.log(req.body);
-    const userExist = await User.findOne({ email: req.body.email });
-    if (userExist) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    let user = await User.findOne({ email: req.body.email });
+    if (user) {
       return res.json({ success: false, exist: true });
     }
-    await User.create({
+    user = await User.create({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password,
+      password: hashedPassword,
       location: req.body.location,
     });
-    res.status(200).json({ success: true });
+    const data = {
+      user: {
+        id: user.id,
+      },
+    };
+    const authToken = await jwt.sign(data, process.env.VITE_JWT_SECRET);
+    res.status(200).json({ success: true, authToken });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false });
@@ -49,15 +58,21 @@ router.post("/createuser", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const data = await User.findOne({ email: req.body.email });
-    if (data) {
-      if (req.body.password !== data.password) {
+    let user = await User.findOne({ email: req.body.email });
+    if (user) {
+      console.log(bcrypt.compareSync(req.body.password, user.password));
+      if (!bcrypt.compareSync(req.body.password, user.password)) {
         return res.json({ success: false, messege: "Incorrect Password" });
-      } else {
-        return res.json({ success: true });
       }
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+      const authToken = jwt.sign(data, process.env.VITE_JWT_SECRET);
+      return res.json({ success: true, authToken });
     } else {
-      console.log(data);
+      console.log(user);
       return res.json({ success: false, messege: "User Doesn't Exists" });
     }
   } catch (error) {
@@ -93,6 +108,7 @@ router.post("/order", async (req, res) => {
       orderedIems: req.body.orderedItems,
       totalAmount: req.body.totalAmount,
       userId: req.body.email,
+      address: req.body.address,
     });
     if (result) res.json({ success: true });
   } catch (error) {
@@ -194,11 +210,11 @@ router.post("/deleteorder/:id", async (req, res) => {
     res.send(500).json({ success: false, messege: "Server Error" });
   }
 });
-router.post("/addcatagory", async (req, res) => {
+router.post("/addcategory", async (req, res) => {
   try {
     console.log(req.body);
-    const result = await Catagory.create({
-      catagoryName: req.body.catagoryName,
+    const result = await category.create({
+      categoryName: req.body.categoryName,
     });
     if (result) {
       // console.log(result);
@@ -211,9 +227,9 @@ router.post("/addcatagory", async (req, res) => {
     res.send(500).json({ success: false, messege: "Server Error" });
   }
 });
-router.get("/getcatagory", async (req, res) => {
+router.get("/getcategory", async (req, res) => {
   try {
-    const result = await Catagory.find({});
+    const result = await category.find({});
     if (result) res.json(result);
     else {
       res.json({ success: false, messege: "Error" });
@@ -223,9 +239,9 @@ router.get("/getcatagory", async (req, res) => {
     res.send(500).json({ success: false, messege: "Server Error" });
   }
 });
-router.get("/deletecatagory/:id", async (req, res) => {
+router.get("/deletecategory/:id", async (req, res) => {
   try {
-    const result = await Catagory.deleteOne({ _id: req.params.id });
+    const result = await category.deleteOne({ _id: req.params.id });
     if (result) res.json({ success: true, messege: "Category Deleted" });
     else {
       res.json({ success: false, messege: "Error" });
@@ -233,6 +249,16 @@ router.get("/deletecatagory/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.send(500).json({ success: false, messege: "Server Error" });
+  }
+});
+router.post("/curruserdata", getUser, async (req, res) => {
+  try {
+    userId = user.req.id;
+    let user = User.findOne({ id: userId }).select("-password");
+    res.send(user);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500).send({ messege: "Internal Server Error." });
   }
 });
 module.exports = router;

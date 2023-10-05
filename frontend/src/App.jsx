@@ -8,7 +8,7 @@ import AddProducts from "./components/Admin/AddProducts";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import EditItems from "./components/Admin/EditItems";
 import AdminLogin from "./pages/AdminLogin";
-import ManageCatagory from "./components/Admin/ManageCategory";
+import Managecategory from "./components/Admin/ManageCategory";
 import Checkout from "./pages/Checkout";
 function App() {
   const router = createBrowserRouter([
@@ -58,7 +58,7 @@ function App() {
         },
         {
           path: "managecategory",
-          element: <ManageCatagory />,
+          element: <Managecategory />,
         },
       ],
     },

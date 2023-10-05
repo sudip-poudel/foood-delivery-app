@@ -6,6 +6,7 @@ const orderSchema = new Schema({
   date: { type: Date, default: Date.now },
   totalAmount: Number,
   userId: { type: String, required: true, unique: true },
+  address: String,
   // time: { type: Timestamp, default: Date.now() },
 });
 const Orders = model("ordered_items", orderSchema);

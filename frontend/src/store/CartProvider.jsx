@@ -61,6 +61,10 @@ const cartReducer = (state, action) => {
   if (action.type === "SETUSER") {
     return { ...state, currentUserEmail: action.email };
   }
+  if (action.type === "RMUSER") {
+    return { ...state, currentUserEmail: "" };
+  }
+  return defaultCartItems;
 };
 
 const CartProvider = (props) => {
@@ -85,6 +89,10 @@ const CartProvider = (props) => {
   const currentUserEmailHandler = (email) => {
     dispatchCart({ type: "SETUSER", email });
   };
+  const removeCurrentUserEmailHandler = () => {
+    dispatchCart({ type: "RMUSER" });
+  };
+
   const cartProvider = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
@@ -93,6 +101,7 @@ const CartProvider = (props) => {
     removeItem: removeItemHandler,
     clearCart: clearCartHandler,
     currUser: currentUserEmailHandler,
+    rmuser: removeCurrentUserEmailHandler,
   };
   return (
     <CartContext.Provider value={cartProvider}>

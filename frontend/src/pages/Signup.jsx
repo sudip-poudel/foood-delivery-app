@@ -76,6 +76,7 @@ const Signup = () => {
       ) {
         localStorage.setItem("loggedin", JSON.stringify(true));
         navigate("/");
+        window.location.reload();
       }
     };
     if (isSubmitted && Object.keys(formError).length === 0) {

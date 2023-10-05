@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import classes from "./Checkout.module.css";
 import CartContext from "../store/cart-context";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,23 +8,29 @@ import Button from "../components/UI/Button";
 const Checkout = () => {
   const cartCtx = useContext(CartContext);
   const navigate = useNavigate();
-
+  const [address, setAddress] = useState("");
   const handlePurchase = async () => {
+    if (address.trim() === "") {
+      alert("Please enter address");
+      return;
+    }
     if (cartCtx.items.length) {
       const orderedItems = cartCtx.items;
       const userEmail = cartCtx.currentUserEmail;
+      console.log(userEmail);
       const totalAmount = cartCtx.totalAmount;
-
+      const orderDetails = {
+        orderedItems,
+        totalAmount,
+        email: userEmail,
+        address,
+      };
       const response = await fetch("http://localhost:5000/api/order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          orderedItems,
-          totalAmount,
-          email: userEmail,
-        }),
+        body: JSON.stringify(orderDetails),
       });
       const result = await response.json();
       if (result.success) {
@@ -87,6 +93,14 @@ const Checkout = () => {
         ) : (
           <p>Cart is empty</p>
         )}
+        <div className={classes.address}>
+          <label htmlFor="address">Enter delivery address</label>
+          <input
+            id="address"
+            type="text"
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
         <div>
           <Button onClick={handlePurchase} type="button">
             Place Order

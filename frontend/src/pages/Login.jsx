@@ -69,6 +69,7 @@ const Login = () => {
 
         // cartCtx.currUser(formValues.email);
         navigate("/");
+        window.location.reload();
       }
     };
     if (isSubmitted && Object.keys(formError).length === 0) {

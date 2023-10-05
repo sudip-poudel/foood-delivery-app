@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import classes from "./ManageCategory.module.css";
-const ManageCatagory = () => {
+const Managecategory = () => {
   // State to hold the list of categories
   const [catagories, setCatagories] = useState([]);
   // State to hold the value of the input field
-  const [newCatagory, setNewCatagory] = useState("");
+  const [newcategory, setNewcategory] = useState("");
 
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_API_URL}/getCatagory`
+        `${import.meta.env.VITE_REACT_API_URL}/getcategory`
       );
       const result = await response.json();
       setCatagories(result);
@@ -17,31 +17,31 @@ const ManageCatagory = () => {
     fetchCategories();
   }, [catagories]);
 
-  const handleAddCatagory = async () => {
-    if (newCatagory.trim() !== "") {
+  const handleAddcategory = async () => {
+    if (newcategory.trim() !== "") {
       const data = await fetch(
-        `${import.meta.env.VITE_REACT_API_URL}/addcatagory`,
+        `${import.meta.env.VITE_REACT_API_URL}/addcategory`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ catagoryName: newCatagory }),
+          body: JSON.stringify({ categoryName: newcategory }),
         }
       );
       const response = await data.json();
       if (!response.success) {
         return alert(response.messege);
       } else {
-        setCatagories([...catagories, newCatagory]);
-        setNewCatagory("");
+        setCatagories([...catagories, newcategory]);
+        setNewcategory("");
       }
     }
   };
 
-  const handleDeleteCatagory = async (id) => {
+  const handleDeletecategory = async (id) => {
     const data = await fetch(
-      `${import.meta.env.VITE_REACT_API_URL}/deletecatagory/${id}`,
+      `${import.meta.env.VITE_REACT_API_URL}/deletecategory/${id}`,
       {
         method: "get",
       }
@@ -62,10 +62,10 @@ const ManageCatagory = () => {
       <ul className={classes.category_list}>
         {catagories.map((category, index) => (
           <li key={index} className={classes.category_item}>
-            {category.catagoryName}
+            {category.categoryName}
             <button
               className={classes.delete_button}
-              onClick={() => handleDeleteCatagory(category._id)}
+              onClick={() => handleDeletecategory(category._id)}
             >
               Delete
             </button>
@@ -76,10 +76,10 @@ const ManageCatagory = () => {
         <input
           type="text"
           className={classes.category_input}
-          value={newCatagory}
-          onChange={(e) => setNewCatagory(e.target.value)}
+          value={newcategory}
+          onChange={(e) => setNewcategory(e.target.value)}
         />
-        <button className={classes.add_button} onClick={handleAddCatagory}>
+        <button className={classes.add_button} onClick={handleAddcategory}>
           Add Category
         </button>
       </div>
@@ -87,4 +87,4 @@ const ManageCatagory = () => {
   );
 };
 
-export default ManageCatagory;
+export default Managecategory;

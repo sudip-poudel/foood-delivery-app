@@ -6,6 +6,8 @@ import Button from "../UI/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { useContext } from "react";
+import CartContext from "../../store/cart-context";
 
 const Header = (props) => {
   const notify = () =>
@@ -20,20 +22,26 @@ const Header = (props) => {
       theme: "dark",
     });
   const navigatee = useNavigate();
+  const cartCtx = useContext(CartContext);
   const [isLoggedIn, setIsLoggedin] = useState(false);
+
   useEffect(() => {
     const loginStatus = JSON.parse(localStorage.getItem("loggedin"));
     console.log(loginStatus);
     setIsLoggedin(loginStatus);
   }, []);
+
   const loginHandler = () => {
     navigatee("/login");
   };
+
   const logoutHandler = () => {
     localStorage.removeItem("loggedin");
     localStorage.removeItem("email");
+    cartCtx.rmuser();
     setIsLoggedin(false);
     notify();
+    window.location.reload();
   };
   return (
     <>

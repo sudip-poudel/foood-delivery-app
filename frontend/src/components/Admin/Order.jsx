@@ -45,8 +45,8 @@ const Order = () => {
         <div key={Math.random()} className={classes.orderitems}>
           <h3>Item: {orderedItem.name}</h3>
           <div className={classes.price}>
-            <p>Price: {orderedItem.price}</p>
-            <p>Amount: {orderedItem.amount} </p>
+            <p>Price: Rs. {orderedItem.price}</p>
+            <p>Amount: x{orderedItem.amount} </p>
           </div>
           <hr />
         </div>
@@ -55,8 +55,9 @@ const Order = () => {
     return (
       <div key={Math.random()} className={classes.container}>
         <h3> User: {order.userId}</h3>
+        <h4>Address: {order.address}</h4>
         <div className={classes.card}>{orderedItems}</div>
-        <h3>Total Amount: {order.totalAmount} </h3>
+        <h3>Total Amount: Rs. {order.totalAmount} </h3>
         <button
           type="button"
           onClick={handleOrderComplete.bind(null, order._id)}

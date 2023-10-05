@@ -10,7 +10,7 @@ const ItemForm = (props) => {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_API_URL}/getCatagory`
+        `${import.meta.env.VITE_REACT_API_URL}/getcategory`
       );
       const result = await response.json();
       setCategories(result);
@@ -86,8 +86,8 @@ const ItemForm = (props) => {
             </option>
           )}
           {categories.map((category, index) => (
-            <option key={index} value={category.catagoryName}>
-              {category.catagoryName}
+            <option key={index} value={category.categoryName}>
+              {category.categoryName}
             </option>
           ))}
         </select>
