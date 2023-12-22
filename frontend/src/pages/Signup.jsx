@@ -3,6 +3,7 @@ import classes from "./Signup.module.css";
 import Button from "../components/UI/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Head from "./Head";
+import axios from "axios";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -50,22 +51,19 @@ const Signup = () => {
   };
   useEffect(() => {
     const handleRequest = async () => {
-      const response = await fetch(
+      const response = await axios.post(
         `${import.meta.env.VITE_REACT_API_URL}/createuser`,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: formValues.name,
-            email: formValues.email.toLowerCase(),
-            password: formValues.password,
-            location: formValues.address,
-          }),
+          name: formValues.name,
+          email: formValues.email.toLowerCase(),
+          password: formValues.password,
+          location: formValues.address,
+        },
+        {
+          withCredentials: true,
         }
       );
-      const result = await response.json();
+      const result = await response.data;
       if (result.exist) {
         return alert("User Already Exist, Please Login");
       }
@@ -74,7 +72,6 @@ const Signup = () => {
         Object.keys(formError).length === 0 &&
         result.success
       ) {
-        localStorage.setItem("loggedin", JSON.stringify(true));
         navigate("/");
         window.location.reload();
       }

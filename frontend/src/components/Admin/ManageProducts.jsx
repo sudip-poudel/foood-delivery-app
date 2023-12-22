@@ -4,25 +4,28 @@ import Card from "../UI/Card";
 // import MealItems from "../Meals/MealItem/MealItem";
 import classes from "./Products.module.css";
 import ProductsCard from "./ProductsCard";
-
+import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
 const ManageProducts = () => {
   const [mealData, setData] = useState([]);
+  const { auth } = useAuth();
 
   useEffect(() => {
     const fetchedData = async () => {
-      const data = await fetch(
+      const data = await axios.get(
         `${import.meta.env.VITE_REACT_API_URL}/getitems`,
         {
-          method: "GET",
+          headers: {
+            Authorization: `Bearer ${auth?.authToken}`,
+          },
         }
       );
-      const datas = await data.json();
+      const datas = await data.data;
       setData(datas);
     };
     fetchedData();
   }, []);
 
-  console.log(mealData[1], "statedata");
   // console.log(mealsList);
   const getProducts = () => {
     // const mealsList = mealData.filter((meal) => meal.category === mealCategory);

@@ -1,21 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import classes from "./MealItemForm.module.css";
 import Input from "../../UI/Input";
-import { useContext } from "react";
-import CartContext from "../../../store/cart-context";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../../hooks/useAuth";
 
 function MealItemForm(props) {
-  const cartCtx = useContext(CartContext);
-
-  const [userEmail, setUserEmail] = useState(cartCtx.currentUserEmail);
+  const { auth } = useAuth();
 
   const navigate = useNavigate();
   const [amountIsValid, setAmountIsValid] = useState(true);
   const enteredAmountRef = useRef();
   const submitHandler = (event) => {
     event.preventDefault();
-    if (userEmail === "") {
+    if (!auth.user) {
       alert("Please login first");
       navigate("/login");
       return;

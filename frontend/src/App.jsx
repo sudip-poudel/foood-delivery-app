@@ -10,7 +10,12 @@ import EditItems from "./components/Admin/EditItems";
 import AdminLogin from "./pages/AdminLogin";
 import Managecategory from "./components/Admin/ManageCategory";
 import Checkout from "./pages/Checkout";
+import useAuth from "../hooks/useAuth";
+import Page404 from "./pages/Page404";
+
 function App() {
+  const { auth } = useAuth();
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -30,7 +35,7 @@ function App() {
     },
     {
       path: "/checkout",
-      element: <Checkout />,
+      element: auth.user ? <Checkout /> : <Page404 />,
     },
     // {
     // 	path: "/orderpage",
@@ -61,6 +66,10 @@ function App() {
           element: <Managecategory />,
         },
       ],
+    },
+    {
+      path: "/*",
+      element: <Page404 />,
     },
   ]);
   return <RouterProvider router={router} />;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import classes from "./ItemForm.module.css";
 import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button";
+import axios from "axios";
 const ItemForm = (props) => {
   const navigate = useNavigate();
 
@@ -9,10 +10,10 @@ const ItemForm = (props) => {
   const [newItem, setNewItem] = useState({});
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await fetch(
+      const response = await axios.get(
         `${import.meta.env.VITE_REACT_API_URL}/getcategory`
       );
-      const result = await response.json();
+      const result = await response.data;
       setCategories(result);
     };
     fetchCategories();
@@ -77,9 +78,7 @@ const ItemForm = (props) => {
           onChange={onChange}
         >
           {props.item !== undefined ? (
-            <option value={""} disabled selected>
-              Select Category
-            </option>
+            ""
           ) : (
             <option value={""} disabled>
               Select Category

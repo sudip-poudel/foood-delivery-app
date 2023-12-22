@@ -4,8 +4,12 @@ const app = express();
 const mongoDB = require("./db");
 const port = 5000;
 const path = require("path");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 mongoDB();
 app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 // app.use((req, res, next) => {
@@ -21,6 +25,7 @@ const cors = require("cors");
 const Orders = require("./models/Orders");
 app.use(
   cors({
+    credentials: true,
     origin: ["http://localhost:5173", "https://reactmeals-ujly.onrender.com"],
   })
 );

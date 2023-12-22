@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import classes from "./ManageCategory.module.css";
+import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
 const Managecategory = () => {
   // State to hold the list of categories
   const [catagories, setCatagories] = useState([]);
   // State to hold the value of the input field
   const [newcategory, setNewcategory] = useState("");
 
+  const { auth } = useAuth();
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await fetch(
+      const response = await axios.get(
         `${import.meta.env.VITE_REACT_API_URL}/getcategory`
       );
-      const result = await response.json();
+      const result = await response.data;
       setCatagories(result);
     };
     fetchCategories();
@@ -19,17 +22,17 @@ const Managecategory = () => {
 
   const handleAddcategory = async () => {
     if (newcategory.trim() !== "") {
-      const data = await fetch(
+      const data = await axios.post(
         `${import.meta.env.VITE_REACT_API_URL}/addcategory`,
+        { categoryName: newcategory },
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${auth?.authToken}`,
           },
-          body: JSON.stringify({ categoryName: newcategory }),
         }
       );
-      const response = await data.json();
+      const response = await data.data;
       if (!response.success) {
         return alert(response.messege);
       } else {
@@ -40,13 +43,17 @@ const Managecategory = () => {
   };
 
   const handleDeletecategory = async (id) => {
-    const data = await fetch(
+    console.log(auth);
+
+    const data = await axios.get(
       `${import.meta.env.VITE_REACT_API_URL}/deletecategory/${id}`,
       {
-        method: "get",
+        headers: {
+          Authorization: `Bearer ${auth?.authToken}`,
+        },
       }
     );
-    const response = await data.json();
+    const response = await data.data;
     if (!response.success) {
       return alert(response.messege);
     } else {

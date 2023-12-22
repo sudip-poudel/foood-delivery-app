@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import classes from "./Login.module.css";
 import Button from "../components/UI/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Head from "./Head";
+import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+
 const Login = () => {
   const navigate = useNavigate();
   const initialValues = { email: "", password: "" };
-
   const [formValues, setFormValues] = useState(initialValues);
 
   const [formError, setFormError] = useState({});
@@ -42,20 +44,29 @@ const Login = () => {
 
   useEffect(() => {
     const handleRequest = async () => {
-      const response = await fetch(
+      // const response = await fetch(
+      //   `${import.meta.env.VITE_REACT_API_URL}/login`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     withCredentials: true,
+      //     body: JSON.stringify({
+      //       email: formValues.email.toLowerCase(),
+      //       password: formValues.password,
+      //     }),
+      //   }
+      // );
+      const response = await axios.post(
         `${import.meta.env.VITE_REACT_API_URL}/login`,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formValues.email.toLowerCase(),
-            password: formValues.password,
-          }),
-        }
+          email: formValues.email.toLowerCase(),
+          password: formValues.password,
+        },
+        { withCredentials: true }
       );
-      const result = await response.json();
+      const result = await response.data;
       if (!result.success) {
         return alert(result.messege);
       }
@@ -64,10 +75,10 @@ const Login = () => {
         Object.keys(formError).length === 0 &&
         result.success
       ) {
-        localStorage.setItem("loggedin", JSON.stringify(true));
-        localStorage.setItem("email", JSON.stringify(formValues.email));
-
+        console.log(response);
         // cartCtx.currUser(formValues.email);
+        // const authToken = result?.authToken;
+        // setAuth(authToken);
         navigate("/");
         window.location.reload();
       }
@@ -77,7 +88,6 @@ const Login = () => {
     }
   }, [formError, isSubmitted]);
 
-  console.log(formError, "FRMERR22");
   return (
     <>
       <Head content="Admin Login" path="/adminlogin" />

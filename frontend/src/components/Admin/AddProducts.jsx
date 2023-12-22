@@ -1,9 +1,12 @@
-import { useState } from "react";
 import ItemForm from "./ItemForm";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
+
 const AddProducts = () => {
+  const { auth } = useAuth();
   const navigate = useNavigate();
+
   const handleSubmit = async (newItem) => {
     console.log(newItem, "dfaklsjdflkjasdlkfjl");
     const itemData = {
@@ -24,7 +27,12 @@ const AddProducts = () => {
 
     const data = await axios.post(
       `${import.meta.env.VITE_REACT_API_URL}/additem`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${auth?.authToken}`,
+        },
+      }
     );
     const response = data.data;
     console.log(response);

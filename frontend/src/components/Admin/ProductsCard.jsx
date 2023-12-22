@@ -2,11 +2,13 @@ import { React } from "react";
 import classes from "./ProductsCard.module.css";
 import Button from "../UI/Button";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
 const ProductsCard = (props) => {
   // const price = `Rs ${props.price.toFixed(2)}`;
 
   const price = `Rs ${props.price}`;
+  const { auth } = useAuth();
 
   const deleteHandler = async () => {
     const id = props.id;
@@ -14,17 +16,16 @@ const ProductsCard = (props) => {
     if (!verify) {
       return;
     } else {
-      const data = await fetch(
+      const data = await axios.post(
         `${import.meta.env.VITE_REACT_API_URL}/deleteproduct`,
+        { id },
         {
-          method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth?.authToken}`,
           },
-          body: JSON.stringify({ id }),
         }
       );
-      const response = await data.json();
+      const response = await data.data;
       if (response.success) {
         alert(`${response.messege}`);
         window.location.reload();

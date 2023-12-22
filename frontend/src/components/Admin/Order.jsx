@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
 import classes from "./Order.module.css";
-import Card from "../UI/Card";
+import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
+
 const Order = () => {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { auth } = useAuth();
   useEffect(() => {
+    let response;
     const getOrders = async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_API_URL}/getorders`,
-        {
-          method: "get",
-        }
-      );
-      const data = await response.json();
+      if (auth?.authToken) {
+        response = await axios.get(
+          `${import.meta.env.VITE_REACT_API_URL}/getorders`,
+          {
+            headers: { Authorization: `Bearer ${auth?.authToken}` },
+          }
+        );
+      }
+      const data = await response.data;
       setOrders(data);
-      console.log(data);
+      setIsLoading(false);
+      console.log(data, "orderssss");
     };
     getOrders();
   }, []);
@@ -22,13 +30,15 @@ const Order = () => {
     if (!verify) {
       return;
     } else {
-      const data = await fetch(
+      const data = await axios.delete(
         `${import.meta.env.VITE_REACT_API_URL}/deleteorder/${id}`,
         {
-          method: "post",
+          headers: {
+            Authorization: `Bearer ${auth?.authToken}`,
+          },
         }
       );
-      const response = await data.json();
+      const response = await data.data;
       if (response.success) {
         alert(`${response.messege}`);
         window.location.reload();
@@ -39,7 +49,6 @@ const Order = () => {
     }
   };
   const orderData = orders.map((order) => {
-    console.log(order.userid);
     const orderedItems = order.orderedIems.map((orderedItem) => {
       return (
         <div key={Math.random()} className={classes.orderitems}>
@@ -69,7 +78,7 @@ const Order = () => {
   });
   return (
     <>
-      <div style={{ marginLeft: "22%" }}>{orderData}</div>
+      {!isLoading ? <div style={{ marginLeft: "22%" }}>{orderData}</div> : ""}
     </>
   );
 };

@@ -2,52 +2,29 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ItemForm from "./ItemForm";
+import useAuth from "../../../hooks/useAuth";
 const EditItems = () => {
   const navigate = useNavigate();
   const [mealData, setData] = useState({});
   const { id } = useParams();
+  const { auth } = useAuth();
   console.log(id);
   useEffect(() => {
     const fetchedData = async () => {
-      const data = await fetch(
+      const data = await axios.get(
         `${import.meta.env.VITE_REACT_API_URL}/getitems/${id}`,
         {
-          method: "GET",
+          headers: {
+            Authorization: `Bearer ${auth?.authToken}`,
+          },
         }
       );
-      const datas = await data.json();
+      const datas = await data.data;
       setData(datas);
     };
     fetchedData();
   }, []);
   const handleSubmit = async (newItem) => {
-    // const itemData = {
-    //   name: newItem.name,
-    //   category: newItem.categoryselect,
-    //   description: newItem.description,
-    //   price: newItem.price,
-    //   img: newItem.img,
-    // };
-    // const data = await fetch(
-    //   `${import.meta.env.VITE_REACT_API_URL}/edititem/${id}`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(itemData),
-    //   }
-    // );
-    // const response = await data.json();
-    // console.log(response, "this is the data");
-    // console.log(response.messege);
-    // if (response.success) {
-    //   alert(`${response.messege}`);
-    //   navigate("/admin/manageproducts");
-    // } else {
-    //   alert(`${response.messege}`);
-    // }
-
     const itemData = {
       name: newItem.name,
       category: newItem.categoryselect,
@@ -65,8 +42,13 @@ const EditItems = () => {
     console.log(formData.get("file"));
 
     const data = await axios.post(
-      `${import.meta.env.VITE_REACT_API_URL}/additem`,
-      formData
+      `${import.meta.env.VITE_REACT_API_URL}/edititem/${id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${auth?.authToken}`,
+        },
+      }
     );
     const response = data.data;
     console.log(response);

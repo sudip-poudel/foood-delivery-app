@@ -3,8 +3,11 @@ import classes from "./Login.module.css";
 import Button from "../components/UI/Button";
 import { useNavigate } from "react-router-dom";
 import Head from "./Head";
+import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 const Login = () => {
   const navigate = useNavigate();
+
   const initialValues = { email: "", password: "" };
 
   const [formValues, setFormValues] = useState(initialValues);
@@ -42,20 +45,15 @@ const Login = () => {
 
   useEffect(() => {
     const handleRequest = async () => {
-      const response = await fetch(
+      const response = await axios.post(
         `${import.meta.env.VITE_REACT_API_URL}/adminlogin`,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formValues.email.toLowerCase(),
-            password: formValues.password,
-          }),
-        }
+          email: formValues.email.toLowerCase(),
+          password: formValues.password,
+        },
+        { withCredentials: true }
       );
-      const result = await response.json();
+      const result = await response.data;
       if (!result.success) {
         return alert(result.messege);
       }
@@ -64,11 +62,11 @@ const Login = () => {
         Object.keys(formError).length === 0 &&
         result.success
       ) {
-        localStorage.setItem("loggedin", JSON.stringify(true));
-        localStorage.setItem("email", JSON.stringify(formValues.email));
-
-        // cartCtx.currUser(formValues.email);
+        console.log(response);
         navigate("/admin/order");
+        window.location.reload();
+      } else {
+        isSubmitted(false);
       }
     };
     if (isSubmitted && Object.keys(formError).length === 0) {

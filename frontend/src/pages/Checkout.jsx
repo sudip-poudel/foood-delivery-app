@@ -4,8 +4,11 @@ import CartContext from "../store/cart-context";
 import { Link, useNavigate } from "react-router-dom";
 import Head from "../pages/Head";
 import Button from "../components/UI/Button";
+import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 const Checkout = () => {
+  const { auth } = useAuth();
   const cartCtx = useContext(CartContext);
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
@@ -16,7 +19,7 @@ const Checkout = () => {
     }
     if (cartCtx.items.length) {
       const orderedItems = cartCtx.items;
-      const userEmail = cartCtx.currentUserEmail;
+      const userEmail = auth?.user?.email;
       console.log(userEmail);
       const totalAmount = cartCtx.totalAmount;
       const orderDetails = {
@@ -25,14 +28,16 @@ const Checkout = () => {
         email: userEmail,
         address,
       };
-      const response = await fetch("http://localhost:5000/api/order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderDetails),
-      });
-      const result = await response.json();
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_API_URL}/order`,
+        orderDetails,
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.authToken}`,
+          },
+        }
+      );
+      const result = await response.data;
       if (result.success) {
         cartCtx.clearCart();
         alert("Order Placed!");
