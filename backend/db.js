@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const uri = "mongodb://localhost:27017/reactmeals"; //reactmeals
+const uri = "mongodb+srv://reactmeals:root@cluster0.mcnxmvw.mongodb.net/test";
+// "mongodb://localhost:27017/reactmeals"; //reactmeals
 // "mongodb+srv://reactmeals:root@cluster0.mcnxmvw.mongodb.net/reactmeals?retryWrites=true&w=majority"; //reactmeals
 
 const mongoDB = async () => {
