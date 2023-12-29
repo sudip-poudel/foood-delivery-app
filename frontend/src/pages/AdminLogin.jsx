@@ -4,7 +4,6 @@ import Button from "../components/UI/Button";
 import { useNavigate } from "react-router-dom";
 import Head from "./Head";
 import axios from "axios";
-import useAuth from "../../hooks/useAuth";
 const Login = () => {
   const navigate = useNavigate();
 

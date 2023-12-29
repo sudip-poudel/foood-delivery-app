@@ -15,6 +15,8 @@ const MealItems = (props) => {
     };
     cartCtx.addItem(item);
   };
+  console.log(`${import.meta.env.VITE_REACT_API_IMG_URL}/images/${props.img}`);
+  console.log(`${import.meta.env.VITE_REACT_API_IMG_URL}`);
   return (
     <li className={classes.meal}>
       <div>
