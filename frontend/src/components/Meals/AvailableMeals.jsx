@@ -20,11 +20,13 @@ const AvailableMeals = () => {
       );
       const datas = await data.json();
       const category = response.data;
+      console.log(datas, category);
       setCategories(category);
       setData(datas);
     };
     fetchedData();
   }, []);
+  console.log(`${import.meta.env.VITE_REACT_API_URL}/getcategory`);
 
   console.log(mealData, "statedata");
   console.log(categories, "categories");
